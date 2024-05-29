@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <div class="grid-container salesman-index">
+        <form method="get" class="filter" th:attr="action=@{/reservation/all-current-reservation}">
+            <input type="text" name="customerName" placeholder="search customer name" th:attr="value=${customerName}" />
+            <input type="text" name="roomNumber" placeholder="search room number" th:attr="value=${roomNumber}" />
+
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Room</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Total Days</th>
+                <th>Bill</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--                grid didapat dari data yang dilempar dari Author Controller diatribute name "allCurrentReservationGrid" -->
+            <tr th:each="allCurrentReservation: ${allCurrentReservationGrid}">
+                <td th:text="${allCurrentReservation.customerName}"></td>
+                <td th:text="${allCurrentReservation.roomNumber}"></td>
+                <td th:text="${allCurrentReservation.checkIn}"></td>
+                <td th:text="${allCurrentReservation.checkOut}"></td>
+                <td th:text="${allCurrentReservation.getTotalDays}"></td>
+                <td th:text="${allCurrentReservation.getBillRupiah}"></td>
+                <td th:text="${allCurrentReservation.reservationStatus}"></td>
+                <td th:unless="${allCurrentReservation.reservationStatus == 'confirmed'}">
+                    <a th:href="@{/reservation/all-current-reservation/delete(id=${allCurrentReservation.id})}" class="blue-button delete-button">Delete</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|">
+                        </div>
+                        <div>
+                            <a th:each="loop: ${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/reservation/all-current-reservation/(page=${loop},customerName=${customerName},roomNumber=${roomNumber})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

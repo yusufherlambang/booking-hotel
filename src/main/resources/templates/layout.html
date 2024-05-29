@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hotel Online</title>
+    <link rel="icon" type="image/ico" th:href="@{/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/site.css}"/>
+    <script th:src="@{/resources/js/jquery-3.6.0.js}"></script>
+</head>
+<body>
+<!--INI ADALAH PARTIAL-->
+<nav th:fragment="navigation">
+    <div class="company-logo">
+        <img th:src="@{/resources/image/logo.png}" alt="Review Basilisk">
+        <h1>Trade of <span class="bold">Hotel Online</span></h1>
+    </div>
+
+    <a sec:authorize="hasAuthority('SuperAdmin')" class="menu category" th:href="@{/admin}">
+        <i class="fas fa-th"></i>
+        <span>Admin</span>
+    </a>
+    <a sec:authorize="hasAnyAuthority('SuperAdmin', 'Admin')" class="menu category" th:href="@{/customer}">
+        <i class="fas fa-th"></i>
+        <span>Customer</span>
+    </a>
+    <a sec:authorize="hasAnyAuthority('SuperAdmin', 'Admin')" class="menu supplier" th:href="@{/room}">
+        <i class="fab fa-amazon"></i>
+        <span>Room</span>
+    </a>
+    <a sec:authorize="hasAnyAuthority('SuperAdmin', 'Admin')" class="menu product" th:href="@{/reservation}">
+        <i class="fas fa-box-open"></i>
+        <span>Reservation</span>
+    </a>
+    <a sec:authorize="hasAuthority('Admin')" class="menu customer" th:href="@{/admin/changeMyProfile}">
+        <i class="fas fa-users"></i>
+        <span>Change My Profile (Admin)</span>
+    </a>
+    <a sec:authorize="hasAuthority('Customer')" class="menu category" th:href="@{/room/vacant}">
+        <i class="fas fa-th"></i>
+        <span>Vacant Rooms</span>
+    </a>
+    <a sec:authorize="hasAuthority('Customer')" class="menu category" th:href="@{/reservation/my-reservation}">
+        <i class="fas fa-th"></i>
+        <span>My Reservation</span>
+    </a>
+    <a sec:authorize="hasAuthority('Customer')" class="menu category" th:href="@{/reservation/my-transaction}">
+        <i class="fas fa-th"></i>
+        <span>My Transaction</span>
+    </a>
+    <a sec:authorize="hasAuthority('Customer')" class="menu category" th:href="@{/customer/changeMyProfile}">
+        <i class="fas fa-th"></i>
+        <span>Change My Profile (Customer)</span>
+    </a>
+
+</nav>
+
+<header th:fragment="header (breadCrumbs)">
+    <div class="bread-crumbs">
+        <span th:text="${breadCrumbs}"></span>
+    </div>
+    <div class="user-wrapper">
+        <div class="user">
+            <span class="full-name" sec:authentication="name">anonymous</span>
+            <span class="role" sec:authentication="principal.authorities">guest</span>
+        </div>
+        <div class="sign-out">
+            <form th:attr="action=@{/logout}" method="POST">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit"><i class="fas fa-sign-out-alt"></i></button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<footer th:fragment="footer">
+    Copyrights &copy; 2022
+    <span class="author">Muhammad Yusuf Herlambang</span>
+    All rights reserved.
+</footer>
+
+<th:block th:fragment="javascript">
+    <script th:src="@{/resources/js/site.js}" defer></script>
+</th:block>>
+</body>
+</html>

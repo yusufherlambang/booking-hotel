@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <div style="text-align: center">
+        <h2 th:text="${message}">
+            <span>🗿🗿🗿</span>
+        </h2>
+        <div class="link-container">
+            <a th:href="@{/reservation/all-current-reservation}" class="blue-button">Back</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller-->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <form method="post" class="upsert-form alternate-action" th:object="${reservation}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{customerId}">
+        <input type="hidden" th:field="*{roomId}">
+        <table th:attr="data-action=${type}">
+
+            <!--                    untuk error skala class-->
+            <div class="field-validation-error" th:errors="${reservation}"></div>
+            <tbody>
+            <tr>
+                <td><label>Room Number</label></td>
+                <td>
+                    <input type="hidden" th:field="*{roomNumber}">
+                    <p th:text="*{roomNumber}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Room Type</label></td>
+                <td>
+                    <input type="hidden" th:field="*{roomType}">
+                    <p th:text="*{roomType}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="checkIn">Check In*</label></td>
+                <td>
+                    <input type="date" th:field="*{checkIn}">
+                    <div class="field-validation-error" th:errors="*{checkIn}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="checkOut">Check Out*</label></td>
+                <td>
+                    <input type="date" th:field="*{checkOut}">
+                    <div class="field-validation-error" th:errors="*{checkOut}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="price">Price Per Day</label></td>
+                <td>
+                    <input type="hidden" th:field="*{price}">
+                    <p th:text="${priceRupiah}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="dynamicBill">Bill</label></td>
+                <td>
+<!--                    <input type="date" th:field="*{checkOut}">-->
+<!--                    <div class="field-validation-error" th:errors="*{checkOut}"></div>-->
+                    <p></p>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <button class="blue-button" type="submit">Reserve</button>
+    </form>
+
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+<script th:src="@{/resources/js/dynamicBill.js}" defer></script>
+</body>
+</html>

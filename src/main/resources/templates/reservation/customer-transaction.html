@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari reservation controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+  <div>
+    <p>
+      Transaction History of <span th:text="${customerName}" ></span>
+    </p>
+  </div>
+  <div class="grid-container salesman-index">
+    <table>
+      <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Check In Date</th>
+        <th>Check Out Date</th>
+        <th>Room Number</th>
+        <th>Cost</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr th:each="reservationCustomer: ${reservationCustomerGrid}">
+        <td th:text="${reservationCustomer.id}"></td>
+        <td th:text="${reservationCustomer.checkIn}"></td>
+        <td th:text="${reservationCustomer.checkOut}"></td>
+        <td th:text="${reservationCustomer.roomNumber}"></td>
+        <td th:text="${reservationCustomer.getBillRupiah}"></td>
+
+      </tr>
+      </tbody>
+
+      <tfoot>
+      <tr>
+        <td colspan="5">
+          <div class="pagination">
+            <div th:text="|page ${currentPage} of ${totalPages}|">
+            </div>
+            <div>
+              <a th:each="loop: ${#numbers.sequence(1, totalPages)}"
+                 th:href="@{/reservation/transaction/customer(id=${id},page=${loop})}"
+                 th:text="${loop}"></a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="link-container">
+    <a th:href="@{/customer}" class="blue-button">Back</a>
+  </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

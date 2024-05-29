@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <div class="grid-container salesman-index">
+        <a class="blue-button create-button" th:href="@{/admin/insertForm}">Insert New Admin</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Job Title</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--                grid didapat dari data yang dilempar dari Author Controller diatribute name "CustomerGrid" -->
+            <tr th:each="admin: ${adminGrid}">
+                <td th:text="${admin.username}"></td>
+                <td th:text="${admin.jobTitle}"></td>
+                <td>
+                    <a th:href="@{/admin/delete(id=${admin.id})}" class="blue-button delete-button">Delete</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|">
+                        </div>
+                        <div>
+                            <a th:each="loop: ${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/admin/index/(page=${loop})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

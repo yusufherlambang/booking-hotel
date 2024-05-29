@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+        <table>
+            <tbody>
+            <tr>
+                <td>Room Number</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.roomNumber}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Room Type</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.roomType}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Customer Name</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.customerName}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Check In</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.checkIn}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Check Out</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.checkOut}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Bill</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.getBillRupiah}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>:</td>
+                <td>
+                    <p th:text="${currentReservation.reservationStatus}"></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

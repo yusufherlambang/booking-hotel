@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <div class="grid-container salesman-index">
+        <form method="get" class="filter" th:attr="action=@{/room/vacant}">
+            <input type="text" name="roomNumber" placeholder="Room Number" th:attr="value=${roomNumber}" />
+            <select name="roomType">
+                <option th:value=null >--> Choose Type <--</option>
+                <option th:each="option : ${typeDropdown}" th:attr="value=${option.stringValue}"
+                        th:text="${option.text}" th:selected="${option.stringValue == typeDropdown}"></option>
+            </select>
+
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>Room Type</th>
+                <th>Price per Day</th>
+                <th>Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <!--                grid didapat dari data yang dilempar dari Author Controller diatribute name "roomGrid" -->
+            <tr th:each="room: ${roomGrid}">
+                <td th:text="${room.roomNumber}"></td>
+                <td th:text="${room.roomType}"></td>
+                <td th:text="${room.getPriceRupiah}"></td>
+                <td>
+                    <a th:href="@{/reservation/reserveForm(roomNumber=${room.roomNumber})}" class="blue-button update-button">Reserve</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|">
+                        </div>
+                        <div>
+                            <a th:each="loop: ${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/room/vacant/(page=${loop},roomNumber=${roomNumber})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller  -->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <div class="grid-container salesman-index">
+        <form method="get" class="filter" th:attr="action=@{/customer/index}">
+            <input type="text" name="name" placeholder="search customer name" th:attr="value=${name}" />
+
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>email</th>
+                <th>address</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--                grid didapat dari data yang dilempar dari Author Controller diatribute name "CustomerGrid" -->
+            <tr th:each="customer: ${customerGrid}">
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.email}"></td>
+                <td th:text="${customer.address}"></td>
+                <td>
+                    <a th:href="@{/reservation/transaction/customer(id=${customer.id})}" class="blue-button delete-button">Transaction History</a>
+                    <a th:href="@{/customer/delete(id=${customer.id})}" class="blue-button delete-button">Delete</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|">
+                        </div>
+                        <div>
+                            <a th:each="loop: ${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/customer/index/(page=${loop},name=${name})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

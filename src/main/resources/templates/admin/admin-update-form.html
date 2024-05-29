@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<!-- inject layout html and fragment called head -->
+<head th:replace="~{layout :: head}">
+</head>
+<body class="main-body">
+
+<!-- inject layout html and fragment called navigation-->
+<nav th:replace="~{layout :: navigation}"></nav>
+
+<!-- inject layout html and fragment called header. passing breadCrumbs as a parameter-->
+<!--breadCrumbs didapat dari author controller-->
+<!--  breadCrumbs merupakan key dari model yang dikirim oleh controller-->
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+
+<main>
+    <form method="post" class="upsert-form alternate-action" th:object="${admin}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <!--        <input type="hidden" th:field="*{id}"/>-->
+        <table th:attr="data-action=${type}">
+            <h1>Update Admin</h1>
+            <!--                    untuk error skala class-->
+            <div class="field-validation-error" th:errors="${admin}"></div>
+            <tbody>
+            <tr>
+                <td><label>Username</label></td>
+                <td>
+                    <input type="text" readonly="true" th:value="${username}" th:field="*{username}" />
+                </td>
+            </tr>
+            <tr>
+                <td><label>Job Title*</label></td>
+                <td>
+                    <input type="text" th:field="*{jobTitle}"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Password*</label></td>
+                <td>
+                    <input type="password" th:field="*{password}">
+                    <div class="field-validation-error" th:errors="*{password}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Password Confirmation*</label></td>
+                <td>
+                    <input type="password" th:field="*{passwordConfirmation}"/>
+                    <div class="field-validation-error" th:errors="*{passwordConfirmation}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="blue-button" type="submit">Update Admin</button>
+    </form>
+
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>
